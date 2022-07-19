@@ -15,11 +15,38 @@ router.get('/categories', async (req, res, next) => {
             if (err) {
                 throw err;
             }
-            rows = rows.map(r => {
+
+            //level1 : returning all categories
+            const firstLevel = rows.map(r => {
                 return {id : r.id, name: r.name} // just want to return this two params
             })
+
+            //level2 : Adding the `children` attribute to the existing GET endpoint :
+
+            let secondLevel = rows;
+            secondLevel.forEach(r => {
+                   r.children =  rows.filter(row=> row.parent_id && row.parent_id === r.id).map(r => {
+                       return {id : r.id, name: r.name} // just want to return this two params
+                   })
+
+            });
+
+            secondLevel = secondLevel.map(r => {
+                return {id : r.id, name: r.name, children: r.children} // just want to return this three params
+            })
+
+
+
             db.close();
-            res.status(200).json({ categories : rows });
+
+
+
+
+            res.status(200).json({
+                allCategories : firstLevel,
+                categoriesWithChildren : secondLevel
+            });
+
         });
 
     }catch (err) {
