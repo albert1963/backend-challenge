@@ -4,7 +4,7 @@ import * as sqlite3 from "sqlite3";
 
 const router = Router();
 
-router.get('/categories', async (req, res, next) => {
+router.get('/categories', (req, res, next) => {
 
     try{
         let db = new sqlite3.Database( "./db.sqlite");
@@ -72,8 +72,6 @@ router.get('/categories', async (req, res, next) => {
                 db.close();
 
 
-
-
                 res.status(200).json({
                     allCategories : firstLevel,
                     categoriesWithChildren : secondLevel,
@@ -94,7 +92,5 @@ router.get('/categories', async (req, res, next) => {
     }
 
 });
-
-
 
 export default router;

@@ -12,4 +12,4 @@ app.use((error, req, res, next ) => { //handle global error
     res.status(status).json({message: message});
 });
 
-app.listen(5000);
+app.listen(3000);
